@@ -10,6 +10,10 @@ end_token = "</S>"  # sentence boundary token.
 """ Implement any helper functions here, e.g., for text preprocessing.
 """
 
+def preprocessText():
+
+
+
 class BigramLM:
     def __init__(self, vocabulary = set()):
         self.vocabulary = vocabulary
@@ -20,6 +24,7 @@ class BigramLM:
     other function you might need here.
     """
 
+
 def main():
     training_set = brown.sents()[:50000]
     held_out_set = brown.sents()[-6000:-3000]
@@ -28,9 +33,9 @@ def main():
     """ Transform the data sets by eliminating unknown words and adding sentence boundary 
     tokens.
     """
-    training_set_prep = PreprocessText(training_set, vocabulary)
-    held_out_set_prep = PreprocessText(held_out_set, vocabulary)
-    test_set_prep = PreprocessText(test_set, vocabulary)
+    training_set_prep = preprocessText(training_set, vocabulary)
+    held_out_set_prep = preprocessText(held_out_set, vocabulary)
+    test_set_prep = preprocessText(test_set, vocabulary)
 
     """ Print the first sentence of each data set.
     """
