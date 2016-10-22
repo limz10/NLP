@@ -2,6 +2,9 @@
   <dictionary name="limz">
     <words>
       <w>bigram</w>
+      <w>bigrams</w>
+      <w>isclose</w>
+      <w>laplacian</w>
       <w>preprocess</w>
       <w>probs</w>
       <w>unigram</w>
