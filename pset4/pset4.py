@@ -265,10 +265,10 @@ def main():
     print "Number of sentences in each bucket: ", \
         len(bucket1), len(bucket2), len(bucket3), len(bucket4), len(bucket5)
 
-    test_bucket = bucket2
+    test_bucket = bucket3
 
-    test_file = open('test_2', "w")
-    gold_file = open('gold_2', "w")
+    test_file = open('test_3', "w")
+    gold_file = open('gold_3', "w")
     count = 0
     for sent in test_bucket:
         count += 1
