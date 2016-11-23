@@ -152,24 +152,23 @@ class InvertedGrammar:
         """
         table = defaultdict(dict)
         backpointers = defaultdict(dict)
-        for jdx in xrange(1, len(sent) + 1):
-            for A in self._r2l_lex[tuple([sent[jdx - 1]])]:
-                table[(jdx - 1, jdx)][A.lhs()] = A.logprob()
-            if jdx >= 2:
-                for idx in reversed(xrange(jdx - 1)):
-                    for kdx in xrange(idx + 1, jdx):
-                        for B in table[(idx, kdx)]:
-                            for C in table[(kdx, jdx)]:
+        for j in xrange(1, len(sent) + 1):
+            for A in self._r2l_lex[tuple([sent[j - 1]])]:
+                table[(j - 1, j)][A.lhs()] = A.logprob()
+            if j >= 2:
+                for i in reversed(xrange(j - 1)):
+                    for k in xrange(i + 1, j):
+                        for B in table[(i, k)]:
+                            for C in table[(k, j)]:
                                 for A in self._r2l[(B, C)]:
-                                    temp = A.logprob() + table[(idx, kdx)][B] + \
-                                           table[(kdx, jdx)][C]
-                                    if A.lhs() not in table[(idx, jdx)]:
-                                        table[(idx, jdx)][A.lhs()] = temp
-                                        backpointers[(idx, jdx)][A.lhs()] = (kdx, B, C)
-                                    else:
-                                        if table[(idx, jdx)][A.lhs()] < temp:
-                                            table[(idx, jdx)][A.lhs()] = temp
-                                            backpointers[(idx, jdx)][A.lhs()] = (kdx, B, C)
+                                    temp = A.logprob() + table[(i, k)][B] + \
+                                           table[(k, j)][C]
+                                    if A.lhs() not in table[(i, j)]:
+                                        table[(i, j)][A.lhs()] = temp
+                                        backpointers[(i, j)][A.lhs()] = (k, B, C)
+                                    elif table[(i, j)][A.lhs()] < temp:
+                                        table[(i, j)][A.lhs()] = temp
+                                        backpointers[(i, j)][A.lhs()] = (k, B, C)
 
         return table, backpointers
 
@@ -180,7 +179,6 @@ class InvertedGrammar:
             (i, k), (k, j) and eventually bottoming out at the preterminal level (i, i+1).
         """
         if Nonterminal('S') not in cky_table[(0, len(sent))]:
-            print 'Parsing Error Occurred!'
             return None
         else:
             return InvertedGrammar.recursive_build(cky_table, sent, Nonterminal("S"), 0, len(sent))
@@ -268,8 +266,9 @@ def main():
         len(bucket1), len(bucket2), len(bucket3), len(bucket4), len(bucket5)
 
     test_bucket = bucket1
-    f1 = open('test_1', "w")
-    f2 = open('gold_1', "w")
+
+    test_file = open('test_1', "w")
+    gold_file = open('gold_1', "w")
     count = 0
     for sent in test_bucket:
         count += 1
@@ -277,15 +276,15 @@ def main():
         sent.un_chomsky_normal_form()
 
         if temp_tree is None:
-            f1.write('\n')
+            test_file.write('\n')
         else:
             temp_tree.un_chomsky_normal_form()
-            f1.write(PrintTree(temp_tree) + '\n')
-        f2.write(PrintTree(sent) + '\n')
+            test_file.write(PrintTree(temp_tree) + '\n')
+        gold_file.write(PrintTree(sent) + '\n')
 
         print count
-    f1.close()
-    f2.close()
+    test_file.close()
+    gold_file.close()
 
 
 if __name__ == "__main__": 
